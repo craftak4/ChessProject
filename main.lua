@@ -1,4 +1,7 @@
 require("Classical")
+
+-- Game Initial Variables
+
 game = {
 	win = {
 		w = nil,
@@ -13,6 +16,11 @@ local function background()
 	love.graphics.setColor(1,1,1)
 end
 
+function clamp(v,min,max)
+	return (v > min and v < max and v) or (v > min and max) or (v < max and min)
+end
+
+-- Board
 
 Board = Object:extend({
 	new = function(self,w,h,rows,columns)
@@ -27,7 +35,7 @@ Board = Object:extend({
 		self.tile.w = self.w/self.tile.rows
 		self.tile.h = self.h/self.tile.columns
 	end,
-	tile = {}
+	tile = {},
 })
 
 function Board:draw()
@@ -41,32 +49,16 @@ function Board:draw()
 	love.graphics.pop()
 end
 
-ChessPiece = Object:extend({
-	x = 0,
-	y = 0,
-	new = function(self,img)
-		self.image = img
-		self.w = game.board.tile.w
-		self.h = game.board.tile.h
-	end,
-	pixel = {}
-})
+require("ChessPiece")
 
-function ChessPiece:update()
-	self.pixel.sw = 1/(self.image:getWidth()/self.w)
-	self.pixel.sh = 1/(self.image:getHeight()/self.h)
-	self.pixel.x = (game.board.x + game.board.tile.w * self.x)
-	self.pixel.y = (game.board.y + game.board.tile.h * self.y)
-end
-
-function ChessPiece:draw()
-	love.graphics.draw(self.image,self.pixel.x,self.pixel.y,0,self.pixel.sw,self.pixel.sh)
-end
+-- LOVE
 
 function love.load()
 	game.win.w, game.win.h = love.graphics:getDimensions()
 
-	game.board = Board(200,200/8*20,8,20)
+	local bw = game.win.w/2
+	bw = clamp(bw,0,game.win.h/2)
+	game.board = Board(bw,bw,8,8)
 
 	game.knight = ChessPiece(love.graphics.newImage("knight.png"))
 	test = love.graphics.newImage("knight.png")
@@ -80,4 +72,8 @@ function love.draw()
 	background()
 	game.board:draw()
 	game.knight:draw()
+end
+
+function love.mousepressed(x,y,btn,touch,presses)
+	game.knight:mousepressed(x,y)
 end

@@ -108,10 +108,11 @@ function love.load()
 	local rows = game.data.board.rows
 	local columns = game.data.board.columns
 
+	-- The Board size will be half of the screen height or width or less
 	local sizeX = game.win.w/2
 	local sizeY = game.math.clamp((sizeX/columns) * rows,0,game.win.h/2)
-
 	sizeX = (sizeY/rows)*columns
+
 	-- Constructs the board
 	game.board = Board(sizeX,sizeY, game.data.board.rows,game.data.board.columns)
 

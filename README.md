@@ -1,8 +1,11 @@
 # Chess Project
 This is a experimentation project with chess and path-finding.
 
+## Status
+The path-finding algorithm will be implemented in version `1.0`.
+
 ## Packages
-- The `Classical.lua` package is an improved package `classic.lua`. My version contains functions for manipulation with tables and improves the experience with object-oritented programming.
+- The `Classical.lua` package is an improved package `classic.lua`. My version contains functions for manipulation with tables and improves the experience with object-oriented programming.
 
 # Installation & Running
 1. Download the executable suitable for your operating system in the [Releases tab](https://github.com/craftak4/ChessProject/releases). For Windows, download the zip archive and extract it.

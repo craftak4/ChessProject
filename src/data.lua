@@ -26,10 +26,21 @@ local function translateData()
 	game.data = result
 end
 
+local function defaultData()
+	local data = game.data
+	local result = {}
+	result.knight = {}
+	result.board = {}
+	result.board.rows, result.board.columns = 6,3
+	result.knight.x, result.knight.y = 0,0
+	game.data = result
+end
 
 -- Loads data from the path, it should be CSV file
 function game:loadData(path)
-	local content = io.input(path):read()
+	local file = io.open(path)
+	if not file then defaultData(); return end
+	local content = file:read()
 
 	-- Elements for each line are parsed and inserted to row that is then inserted to data object. For ex. [["this", "is", "first", "row"], ["and", "this", "is", "second"]]
 	for line in content:gmatch("([^\n]*)\n?") do

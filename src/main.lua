@@ -46,7 +46,7 @@ end
 
 -- Clamp function, chooses `v` if it is less than `maxNum` and bigger than `minNum` - if not, `v` will equal to `maxNum` or `minNum`, depending if it is less or bigger
 function game.math.clamp(v,minNum,maxNum)
-	return game.math.max(game.math.min(v,minNum),maxNum)
+	return game.math.max(game.math.min(v,maxNum),minNum)
 end
 
 
@@ -69,8 +69,8 @@ Board = Object:extend({
 		self.y = game.win.h/2 - self.h/2
 
 		-- Calculates the pixel-based size of each tile
-		self.tile.w = self.w/self.tile.rows
-		self.tile.h = self.h/self.tile.columns
+		self.tile.w = self.w/self.tile.columns
+		self.tile.h = self.h/self.tile.rows
 	end,
 	-- Data of tile
 	tile = {},
@@ -84,8 +84,8 @@ function Board:draw()
 		love.graphics.translate(self.x,self.y)
 
 		-- Draws all the tiles
-		for y=0,self.tile.columns-1,1 do
-			for x=0,self.tile.rows-1,1 do
+		for y=0,self.tile.rows-1,1 do
+			for x=0,self.tile.columns-1,1 do
 				love.graphics.rectangle("line",x*self.tile.w,y*self.tile.h,self.tile.w,self.tile.h)
 			end
 		end
@@ -105,20 +105,15 @@ function love.load()
 	game:loadData("data.csv")
 
 	-- Calculates the comfortable size of Board depending on device size
-	dbg:record("winX",game.win.w)
-	dbg:record("winY",game.win.h)
-
 	local rows = game.data.board.rows
 	local columns = game.data.board.columns
 
 	local sizeX = game.win.w/2
-	dbg:record("sizeX initial",sizeX)
 	local sizeY = game.math.clamp((sizeX/columns) * rows,0,game.win.h/2)
-	dbg:record("sizeY",sizeY)
-	sizeX = sizeY/rows * columns
 
+	sizeX = (sizeY/rows)*columns
 	-- Constructs the board
-	game.board = Board(300,600,game.data.board.rows,game.data.board.columns)
+	game.board = Board(sizeX,sizeY, game.data.board.rows,game.data.board.columns)
 
 	-- Constructs the knight
 	game.knight = Knight(love.graphics.newImage("knight.png"))

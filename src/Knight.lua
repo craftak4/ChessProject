@@ -34,8 +34,8 @@ end
 
 function Knight:mousepressed(x,y)
 	-- Calculates the Board-based position with the pixel-based position of the mouse
-	local tx = game.math.clamp(math.floor((x - game.board.x)/self.pixel.w),0,game.board.tile.rows)
-	local ty = game.math.clamp(math.floor((y - game.board.y)/self.pixel.h),0,game.board.tile.columns)
+	local tx = game.math.clamp(math.floor((x - game.board.x)/game.board.tile.w),0,game.board.tile.columns-1)
+	local ty = game.math.clamp(math.floor((y - game.board.y)/game.board.tile.h),0,game.board.tile.rows-1)
 
 	-- Calculates the movement of the Knight (Board-based)
 	local dx = math.abs(self.x - tx)
